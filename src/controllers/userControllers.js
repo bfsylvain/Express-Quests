@@ -39,7 +39,7 @@ const getUsers = (req, res) => {
         [firstname, lastname, email, city, language]
         )
         .then(([result]) => {
-            res.sendStatus(201).send({id: result.insertId})
+            res.status(201).send({id: result.insertId})
         })
         .catch((err) => {
             console.error(err);

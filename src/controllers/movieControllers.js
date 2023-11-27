@@ -70,7 +70,6 @@ const getMovieById = (req, res) => {
     .then(([movies]) => {
       if (movies[0] != null) {
         res.json(movies[0]);
-        console.log(movies);
       } else {
         res.sendStatus(404);
       }
@@ -82,7 +81,7 @@ const getMovieById = (req, res) => {
 };
 
 const postMovie = (req, res) => {
-  // console.log(req.body);
+
   const { title, director, year, color, duration } = req.body;
   // res.send("Post route is working")
   database
@@ -91,7 +90,7 @@ const postMovie = (req, res) => {
       [title, director, year, color, duration]
     )
     .then(([result]) => {
-      res.sendStatus(201).send({ id: result.insertId})
+      res.status(201).send({ id: result.insertId });
     })
     .catch((err) => {
       console.error(err);

@@ -31,3 +31,39 @@ describe("GET /api/users/:id", () => {
     expect(response.status).toEqual(404);
   });
 });
+
+describe("POST /api/users", () => {
+  it("should return created user", async () => {
+    const newUser = {
+      firstname: "Maria",
+      lastname: "Lopez",
+      email: `${crypto.randomUUID()}@wild.co`,
+      city: "London",
+      language: "russian"
+    }
+    const response = await request(app).post("/api/users").send(newUser)
+
+    expect(response.status).toEqual(201)
+    expect(response.body).toHaveProperty("id")
+    expect(typeof response.body.id).toBe("number")
+
+    const [result] = await database.query(
+      "SELECT * FROM users WHERE id=?", response.body.id
+    )
+
+    const [userInDatabase] = result
+
+    expect(userInDatabase).toHaveProperty("lastname")
+    expect(userInDatabase).toHaveProperty("email")
+    expect(userInDatabase.firstname).toStrictEqual(newUser.firstname)
+
+  })
+
+  it("should return a problem", async () => {
+    const userWithMistake = {firstname: "Angela"}
+
+    const response = await request(app).post("/api/users").send(userWithMistake)
+
+    expect(response.status).toEqual(500)
+  })
+})
