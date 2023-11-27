@@ -25,7 +25,7 @@ const movies = [
   },
 ];
 
-const database = require("../../database")
+const database = require("../../database");
 
 const getMovies = (req, res) => {
   // database
@@ -68,20 +68,38 @@ const getMovieById = (req, res) => {
   database
     .query("select * from movies where id = ?", [id])
     .then(([movies]) => {
-      if(movies[0] != null) {
-        res.json(movies[0])
-        console.log(movies)
+      if (movies[0] != null) {
+        res.json(movies[0]);
+        console.log(movies);
       } else {
-        res.sendStatus(404)
+        res.sendStatus(404);
       }
     })
     .catch((err) => {
-      console.error(err)
-      res.sendStatus(500)
-    })
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
+const postMovie = (req, res) => {
+  // console.log(req.body);
+  const { title, director, year, color, duration } = req.body;
+  // res.send("Post route is working")
+  database
+    .query(
+      "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      [title, director, year, color, duration]
+    )
+    .then(([result]) => {
+      res.sendStatus(201).send({ id: result.insertId})
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 module.exports = {
   getMovies,
   getMovieById,
+  postMovie,
 };
