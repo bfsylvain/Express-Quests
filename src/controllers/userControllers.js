@@ -45,8 +45,8 @@ const getUsers = (req, res) => {
             console.error(err);
             res.sendStatus(500)
         })
-
   }
+  
   module.exports = {
     getUsers,
     getUserById,
