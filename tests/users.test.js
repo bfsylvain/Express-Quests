@@ -66,7 +66,7 @@ describe("POST /api/users", () => {
       .post("/api/users")
       .send(userWithMistake);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 

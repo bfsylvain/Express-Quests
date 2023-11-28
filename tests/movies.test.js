@@ -38,7 +38,7 @@ describe("POST /api/movies", () => {
       title: "Star Wars",
       director: "George Lucas",
       year: "1977",
-      color: true,
+      color: "1",
       duration: 120,
     };
 
@@ -66,7 +66,7 @@ describe("POST /api/movies", () => {
       .post("/api/movies")
       .send(movieWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 
