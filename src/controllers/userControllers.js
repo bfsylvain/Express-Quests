@@ -69,12 +69,12 @@ const updateUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  id = parseInt(req.params.id);
+  const id = parseInt(req.params.id);
 
   database
     .query("DELETE FROM users WHERE id=?", [id])
-    .then(([response]) => {
-      if (response.affectedRows === 0) {
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
         res.sendStatus(404);
       } else {
         res.sendStatus(204);
