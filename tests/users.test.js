@@ -163,7 +163,7 @@ describe("DELETE /api/users/:id", () => {
       email: `${crypto.randomUUID()}@wild.co`,
       city: "New York",
       language: "english",
-    }
+    };
 
     const [result] = await database.query(
       "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
@@ -174,12 +174,24 @@ describe("DELETE /api/users/:id", () => {
         newUser.city,
         newUser.language,
       ]
-    )
-      console.log(result)
-    const id = result.insertId
-      console.log(id)
-    const response = await request(app).delete(`/api/users/${id}`)
+    );
+    console.log(result);
+    const id = result.insertId;
+    console.log(id);
+    const response = await request(app).delete(`/api/users/${id}`);
 
-    expect(response.status).toEqual(204)
+    expect(response.status).toEqual(204);
+
+    const [results] = await database.query("SELECT * FROM users WHERE id=?", id);
+
+    const userInDatabase = results;
+
+    expect(userInDatabase.status).toBe(undefined)
+  });
+
+  it("should return no user", async () => {
+    const response = await request(app).delete("/api/users/0")
+
+    expect(response.status).toEqual(404)
   })
-})
+});
